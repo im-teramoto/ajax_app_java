@@ -10,6 +10,8 @@ import in.tech_camp.ajax_app_java.entity.PostEntity;
 import in.tech_camp.ajax_app_java.form.PostForm;
 import in.tech_camp.ajax_app_java.repository.PostRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
+
 
 @Controller
 @AllArgsConstructor
@@ -32,11 +34,12 @@ public class PostController {
   //}
 
   @PostMapping("/posts")
-  public String savePost(@ModelAttribute("postForm") PostForm form){
+  public ResponseEntity<PostEntity> savePost(@ModelAttribute("postForm") PostForm form){
     PostEntity post = new PostEntity();
     post.setContent(form.getContent());
     postRepository.insert(post);
-    return "redirect:/";
+    PostEntity resultPost = postRepository.findById(post.getId());
+    return ResponseEntity.ok(resultPost);
   }
   
 }
